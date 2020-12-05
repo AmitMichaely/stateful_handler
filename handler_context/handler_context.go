@@ -5,6 +5,9 @@ import "errors"
 type HandlerContext interface {
 	Skip(runnable) bool
 	MarkAsDone(runnable) error
+	Stop(string)
+	Stopped() bool
+	StopReason() string
 }
 
 type runnable interface {
@@ -13,6 +16,8 @@ type runnable interface {
 
 type handlerContext struct {
 	doneStages map[string]bool
+	stopped bool
+	stopReason string
 }
 
 func CreateFrom(previousCtx HandlerContext) *handlerContext {
@@ -39,4 +44,17 @@ func (ctx *handlerContext) MarkAsDone(stage runnable) error {
 
 	ctx.doneStages[stage.Name()] = true
 	return nil
+}
+
+func (ctx *handlerContext) Stop(reason string) {
+	ctx.stopped = true
+	ctx.stopReason = reason
+}
+
+func (ctx *handlerContext) Stopped() bool {
+	return ctx.stopped
+}
+
+func (ctx *handlerContext) StopReason() string {
+	return ctx.stopReason
 }

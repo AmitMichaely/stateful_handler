@@ -41,6 +41,10 @@ func (sh *statefulHandler) Run() result.Result {
 			return result.New(sh.handlerContext, false, currentStage.Name(), sh.state, err)
 		}
 
+		if sh.handlerContext.Stopped() {
+			return result.New(sh.handlerContext, true, "", sh.state, nil)
+		}
+
 		if err := sh.handlerContext.MarkAsDone(currentStage); err != nil {
 			return result.New(sh.handlerContext, false, currentStage.Name(), sh.state, errors.New(fmt.Sprintf("failed marking %s as done", currentStage.Name())))
 		}
