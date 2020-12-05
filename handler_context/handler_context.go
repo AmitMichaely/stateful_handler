@@ -15,12 +15,12 @@ type handlerContext struct {
 	doneStages map[string]bool
 }
 
-func New(ctx HandlerContext) *handlerContext {
-	if ctx == nil {
+func CreateFrom(previousCtx HandlerContext) *handlerContext {
+	if previousCtx == nil {
 		return &handlerContext{}
 	}
 
-	if castedCtx, ok := ctx.(*handlerContext); ok {
+	if castedCtx, ok := previousCtx.(*handlerContext); ok {
 		return castedCtx
 	}
 

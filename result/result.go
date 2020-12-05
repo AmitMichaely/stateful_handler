@@ -8,7 +8,7 @@ import (
 type Result interface {
 	Success() bool
 	FailedStage() string
-	Error() string
+	Error() error
 	LastState() state.State
 	FinalContext() handler_context.HandlerContext
 }
@@ -39,8 +39,8 @@ func (r *result) FailedStage() string {
 	return r.failedStage
 }
 
-func (r *result) Error() string {
-	return r.err.Error()
+func (r *result) Error() error {
+	return r.err
 }
 
 func (r *result) LastState() state.State {
