@@ -33,7 +33,7 @@ func New(ctx handler_context.HandlerContext, stages ...Stage) *statefulHandler {
 
 func (sh *statefulHandler) Run() result.Result {
 	for _, currentStage := range sh.stages {
-		if sh.handlerContext.Skip(currentStage){
+		if sh.handlerContext.ShouldSkip(currentStage){
 			continue
 		}
 

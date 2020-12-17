@@ -11,11 +11,11 @@ It also provides an interface (State) that allows you to pass arguments between 
 
 ```go
 func stage1(handlerContext, state) error {
-// stage1 logic
+  // stage1 logic
 }
 
-func stage3(handlerContext, state) error {
-// stage3 logic
+func stage2(handlerContext, state) error {
+// stage2 logic
 }
 
 func stage3(handlerContext, state) error {

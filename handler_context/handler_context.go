@@ -3,7 +3,7 @@ package handler_context
 import "errors"
 
 type HandlerContext interface {
-	Skip(runnable) bool
+	ShouldSkip(runnable) bool
 	MarkAsDone(runnable) error
 	Stop(string)
 	Stopped() bool
@@ -32,7 +32,7 @@ func CreateFrom(previousCtx HandlerContext) *handlerContext {
 	return &handlerContext{}
 }
 
-func (ctx *handlerContext) Skip(stage runnable) bool {
+func (ctx *handlerContext) ShouldSkip(stage runnable) bool {
 	_, stageDone := ctx.doneStages[stage.Name()]
 	return stageDone
 }
