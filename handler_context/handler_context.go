@@ -1,13 +1,11 @@
 package handler_context
 
-import "errors"
-
 type HandlerContext interface {
-	ShouldSkip(runnable) bool
-	MarkAsDone(runnable) error
+	UpdateCurrentStage(runnable)
 	Stop(string)
 	Stopped() bool
 	StopReason() string
+	EntryStage() string
 }
 
 type runnable interface {
@@ -15,7 +13,7 @@ type runnable interface {
 }
 
 type handlerContext struct {
-	doneStages map[string]bool
+	entryStage string
 	stopped bool
 	stopReason string
 }
@@ -32,18 +30,8 @@ func CreateFrom(previousCtx HandlerContext) *handlerContext {
 	return &handlerContext{}
 }
 
-func (ctx *handlerContext) ShouldSkip(stage runnable) bool {
-	_, stageDone := ctx.doneStages[stage.Name()]
-	return stageDone
-}
-
-func (ctx *handlerContext) MarkAsDone(stage runnable) error {
-	if _, doneStage := ctx.doneStages[stage.Name()]; doneStage {
-		return errors.New("stage was already marked as done")
-	}
-
-	ctx.doneStages[stage.Name()] = true
-	return nil
+func (ctx *handlerContext) UpdateCurrentStage(stage runnable) {
+	ctx.entryStage = stage.Name()
 }
 
 func (ctx *handlerContext) Stop(reason string) {
@@ -57,4 +45,8 @@ func (ctx *handlerContext) Stopped() bool {
 
 func (ctx *handlerContext) StopReason() string {
 	return ctx.stopReason
+}
+
+func (ctx *handlerContext) EntryStage() string {
+	return ctx.entryStage
 }

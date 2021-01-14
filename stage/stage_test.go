@@ -7,7 +7,7 @@ import (
 )
 
 func TestStage_Name(t *testing.T) {
-	var stageInstance Stage = stage_mock.Rainbow
+	stageInstance := Stage(stage_mock.Rainbow)
 
 	assert.Equal(t, "Rainbow", stageInstance.Name())
 }
